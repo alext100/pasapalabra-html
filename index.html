@@ -6,12 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pasapalabra HTML</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="js/script.js" defer></script>
 </head>
 
 <body>
     <div class="container">
+        <button class="play_button">Play</button>
         <div class="block">
             <div class="square">
                 <span class="letra-a">a</span>
@@ -148,51 +149,23 @@
             </div>
         </div>
     </div>
+    <div class="interaction">
+        <div class="pregunta">Pregunta:
+            <p class="question"></p>
+        </div>
+        <div class="answer">
+            <input id="answer" type="text" placeholder="Tu respuesta..." autocomplete="off">
+            <p class="answer_paragraph"></p>
+        </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- <time class="clock">
-        <span class="clock__stroke clock__stroke--small letra--a">a</span>
-        <span class="clock__stroke clock__stroke--small letra--b">b</span>
-        <span class="clock__stroke clock__stroke--small letra--c">c</span>
-        <span class="clock__stroke clock__stroke--small letra--d">d</span>
-        <span class="clock__stroke clock__stroke--small letra--e">e</span>
-        <span class="clock__stroke clock__stroke--small letra--f">f</span>
-        <span class="clock__stroke clock__stroke--small letra--g">g</span>
-        <span class="clock__stroke clock__stroke--small letra--h">h</span>
-        <span class="clock__stroke clock__stroke--small letra--i">i</span>
-        <span class="clock__stroke clock__stroke--small letra--j">j</span>
-        <span class="clock__stroke clock__stroke--small letra--k">k</span>
-        <span class="clock__stroke clock__stroke--small letra--l">l</span>
-        <span class="clock__stroke clock__stroke--small letra--m">m</span>
-        <span class="clock__stroke clock__stroke--small letra--n">n</span>
-        <span class="clock__stroke clock__stroke--small letra--ñ">ñ</span>
-        <span class="clock__stroke clock__stroke--small letra--o">o</span>
-        <span class="clock__stroke clock__stroke--small letra--p">p</span>
-        <span class="clock__stroke clock__stroke--small letra--q">q</span>
-        <span class="clock__stroke clock__stroke--small letra--r">r</span>
-        <span class="clock__stroke clock__stroke--small letra--s">s</span>
-        <span class="clock__stroke clock__stroke--small letra--t">t</span>
-        <span class="clock__stroke clock__stroke--small letra--u">u</span>
-        <span class="clock__stroke clock__stroke--small letra--v">v</span>
-        <span class="clock__stroke clock__stroke--small letra--w">w</span>
-        <span class="clock__stroke clock__stroke--small letra--x">x</span>
-        <span class="clock__stroke clock__stroke--small letra--y">y</span>
-        <span class="clock__stroke clock__stroke--small letra--z">z</span>
-    
-        <span class="clock__hand clock__hand--minute"></span>
-
-    </time> -->
+        <div class="buttons_block">
+            <button type="button" id="responder" class="answer_button button">Responder</button>
+            <button type="button" id="pasapalabra" class="button">Pasapalabra</button>
+            <br>
+            <button type="button" id="stop" class="button">Stop</button>
+            <button id="playAgain" class="button">PLAY AGAIN</button>
+        </div>
+    </div>
 </body>
 
 </html>
