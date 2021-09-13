@@ -17,7 +17,7 @@ body {
 
 .container {
     position: absolute;
-    top: 30%;
+    top: 47%;
     right: 40%;
 }
 
@@ -31,9 +31,10 @@ body {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    position: relative;
+    /*     position: relative; */
     transform: translate(250%, 0);
     top: 83px;
+    cursor: pointer;
 }
 
 .container>div {

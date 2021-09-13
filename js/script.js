@@ -30,11 +30,11 @@ let questions = [
 
 const container = document.querySelector(".container");
 //console.log('container: ', container);
-const playButton = document.querySelector("play_button");
+const playButton = document.querySelector(".play_button_div");
 //console.log('playButton: ', playButton);
 const square = document.querySelectorAll(".square");
 //console.log('square: ', square);
-const letrasSpans = document.getElementsByTagName("span");
+const letrasSpans = document.querySelectorAll("span");
 //console.log('letrasSpans: ', letrasSpans);
 const blocks = document.querySelectorAll(".block");
 //console.log('blocks: ', blocks);
@@ -44,12 +44,16 @@ const answerParagraph = document.querySelector(".answer_paragraph");
 //console.log('answerParagraph: ', answerParagraph);
 const buttonsBlock = document.querySelectorAll(".button")
     //console.log('buttonsBlock: ', buttonsBlock);
-const answerVal = document.getElementById("answer");
-const responderButton = document.getElementById("responder");
+const answerVal = document.querySelector("#answer");
+const responderButton = document.querySelector("#responder");
 
 let r = "";
 let letraAngle = 270;
 let blockAngle = 90;
+
+let newQuestions = [];
+let currentLetter = "";
+let index;
 
 Array.from(letrasSpans).forEach(item => {
     r = "rotate(" + letraAngle + "deg)";
@@ -63,7 +67,7 @@ Array.from(blocks).forEach(item => {
     blockAngle += 13.3333;
 });
 
-window.addEventListener("click", function(event) {
+container.addEventListener("click", function(event) {
     // Check to see if a "round" element was the trigger for the event
     if (event.target.classList.contains("square")) {
         // Style the trigger based on adding/removing the pre-existing class
@@ -76,29 +80,77 @@ function getNewRandomQuestions(array) { // Del array inicial, formamos un nuevo 
     newQuestions = array.map(({ letter, answer, status, question }) => ({ letter, answer: answer[index], status, question: question[index] }));
     return newQuestions;
 }
-let arr = getNewRandomQuestions(questions);
-console.log(arr[10]);
+//getNewRandomQuestions(questions);
 
-let userQuestion = arr[10];
-let inputAnswer = "";
+//let userQuestion = arr[17];
+//let inputAnswer = "";
 
-questionParagraph.textContent = userQuestion.question;
+
 
 
 function currentUserAnswer() {
     return answerVal.value;
 }
 
-function checkAnswer() {
-    let answ = currentUserAnswer();
-    answerParagraph.textContent = answ;
-    if (answ === userQuestion.answer) {
-
-        console.log("correcto!")
-    } else { console.log("Incorrecto!"); }
+function updateAnswer() {
+    answerVal.value = '';
 }
 
 
+function changeLetterColor() {
+    for (let item of letrasSpans) {
+        if (currentLetter !== item.textContent) {
+            item.parentElement.classList.remove("activeCircle");
+        } else item.parentElement.classList.add("activeCircle");
+    }
+}
+
+function updateQuestions() {
+    return newArrayQuestions.filter(arr => arr.status === 0);
+}
+//const newArrayQuestions = getNewQuestions();
+
+function updateLetter() {
+    for (let i = 0; i < newArrayQuestions.length; i++) {
+        if (currentLetter === newArrayQuestions[i].letter) {
+            i++;
+            index++;
+            console.log('index: ', index);
+            currentLetter = newArrayQuestions[i].letter;
+        }
+    }
+    console.log('currentLetter: ', currentLetter);
+    return currentLetter;
+}
+
+function showNextQuestion() {
+    questionParagraph.textContent = newArrayQuestions[index].question;
+}
+
+function checkAnswer() {
+    let answ = currentUserAnswer(); //answerVal.value
+    if (answ.toLowerCase() !== null && answ.toLowerCase() === newArrayQuestions[index].answer) {
+        answerParagraph.textContent = answ;
+        console.log("correcto!")
+    } else {
+        console.log("Incorrecto!");
+        answerParagraph.textContent = answ;
+    }
+    updateLetter();
+    updateAnswer(); //  answerVal.value = ''
+    changeLetterColor();
+    showNextQuestion()
+}
+
+function startGame() {
+    index = 0;
+    updateAnswer(); //  answerVal.value = ''
+    newArrayQuestions = getNewRandomQuestions(questions); //newQuestions.filter(arr => arr.status === 0);
+    currentLetter = newArrayQuestions[index].letter;
+    questionParagraph.textContent = newArrayQuestions[index].question;
+    changeLetterColor();
+    console.log("start");
+}
 
 
 
@@ -117,4 +169,10 @@ window.onkeydown = function(event) {
 
 responderButton.addEventListener("click", (event) => {
     checkAnswer();
+})
+
+playButton.addEventListener("click", (event) => {
+    if (event.target.nodeName === 'BUTTON') {
+        startGame();
+    }
 })
