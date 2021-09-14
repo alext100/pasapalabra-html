@@ -29,31 +29,34 @@ let questions = [
 ]
 
 const container = document.querySelector(".container");
-//console.log('container: ', container);
-const playButton = document.querySelector(".play_button_div");
-//console.log('playButton: ', playButton);
 const square = document.querySelectorAll(".square");
-//console.log('square: ', square);
 const letrasSpans = document.querySelectorAll("span");
-//console.log('letrasSpans: ', letrasSpans);
 const blocks = document.querySelectorAll(".block");
-//console.log('blocks: ', blocks);
+const descriptionPart = document.querySelector(".description");
 const questionParagraph = document.querySelector(".question");
-//console.log('questionParagraph: ', questionParagraph);
 const answerParagraph = document.querySelector(".answer_paragraph");
-//console.log('answerParagraph: ', answerParagraph);
-const buttonsBlock = document.querySelectorAll(".button")
-    //console.log('buttonsBlock: ', buttonsBlock);
+const buttonsBlock = document.querySelector(".buttons_block");
 const answerVal = document.querySelector("#answer");
 const responderButton = document.querySelector("#responder");
+const playButton = document.querySelector(".play_button_div");
+const pasapalabraButton = document.querySelector("#pasapalabra");
+const stopButton = document.querySelector("#stop");
+const scoresBlock = document.querySelector("#scores_block");
+const interractionBlock = document.querySelector(".interaction");
+const scoresToShow = document.querySelector("#score_sum");
+const finalMessage = document.querySelector(".final_message");
 
 let r = "";
 let letraAngle = 270;
 let blockAngle = 90;
 
-let newQuestions = [];
+let newArrayQuestions = [];
 let currentLetter = "";
 let index;
+let userPunto = 0;
+let nextRoundMarker = 0;
+let timeTotal;
+let timer;
 
 Array.from(letrasSpans).forEach(item => {
     r = "rotate(" + letraAngle + "deg)";
@@ -67,26 +70,23 @@ Array.from(blocks).forEach(item => {
     blockAngle += 13.3333;
 });
 
-container.addEventListener("click", function(event) {
-    // Check to see if a "round" element was the trigger for the event
-    if (event.target.classList.contains("square")) {
-        // Style the trigger based on adding/removing the pre-existing class
-        event.target.classList.toggle("activeCircle")
-    }
-});
+function hideDOMElement(element) {
+    element.classList.add('hideElement');
+}
+
+function showDOMElement(element) {
+    element.classList.remove('hideElement');
+}
+
+function showScores() {
+    scoresToShow.textContent = userPunto;
+}
 
 function getNewRandomQuestions(array) { // Del array inicial, formamos un nuevo array con preguntas aleotorias.
     let index = Math.floor(Math.random() * 3);
     newQuestions = array.map(({ letter, answer, status, question }) => ({ letter, answer: answer[index], status, question: question[index] }));
     return newQuestions;
 }
-//getNewRandomQuestions(questions);
-
-//let userQuestion = arr[17];
-//let inputAnswer = "";
-
-
-
 
 function currentUserAnswer() {
     return answerVal.value;
@@ -97,7 +97,7 @@ function updateAnswer() {
 }
 
 
-function changeLetterColor() {
+function changeActivLetterColor() {
     for (let item of letrasSpans) {
         if (currentLetter !== item.textContent) {
             item.parentElement.classList.remove("activeCircle");
@@ -105,59 +105,157 @@ function changeLetterColor() {
     }
 }
 
+function changePasapalabraLetterColor() {
+    for (let item of letrasSpans) {
+        if (currentLetter === item.textContent) {
+            item.parentElement.classList.add("pasapalabraCircle");
+        }
+    }
+}
+
+function changeCorrectAnswerLetterColor() {
+    for (let item of letrasSpans) {
+        if (currentLetter === item.textContent) {
+            item.parentElement.classList.add("correctAnswerCircle");
+        }
+    }
+}
+
+function changeIncorrectAnswerLetterColor() {
+    for (let item of letrasSpans) {
+        if (currentLetter === item.textContent) {
+            item.parentElement.classList.add("incorrectAnswerCircle");
+        }
+    }
+}
+
+function removeAllAnswerLetterClasses() {
+    for (let item of letrasSpans) {
+        item.parentElement.classList.remove("activeCircle", "pasapalabraCircle", "correctAnswerCircle", "incorrectAnswerCircle");
+    }
+}
+
 function updateQuestions() {
     return newArrayQuestions.filter(arr => arr.status === 0);
 }
-//const newArrayQuestions = getNewQuestions();
 
 function updateLetter() {
-    for (let i = 0; i < newArrayQuestions.length; i++) {
-        if (currentLetter === newArrayQuestions[i].letter) {
-            i++;
-            index++;
-            console.log('index: ', index);
-            currentLetter = newArrayQuestions[i].letter;
+    if (index === 0 && nextRoundMarker === 1) {
+        nextRoundMarker = 0;
+        return;
+    } else {
+
+        for (let i = 0; i < newArrayQuestions.length - 1; i++) {
+            if (currentLetter === newArrayQuestions[i].letter) {
+                i++;
+                currentLetter = newArrayQuestions[i].letter;
+                updateIndex();
+            }
         }
     }
     console.log('currentLetter: ', currentLetter);
     return currentLetter;
 }
 
+function updateIndex() {
+    index++;
+    //  console.log('index: ', index);
+}
+
 function showNextQuestion() {
     questionParagraph.textContent = newArrayQuestions[index].question;
+    console.log(`newArrayQuestions[${index}].question: ', ${newArrayQuestions[index].question}`);
+}
+
+function pasapalabra() {
+    changePasapalabraLetterColor();
+    userPuntos(index, 0, 0);
+    updateLetter();
+    changeActivLetterColor();
+    showNextQuestion();
+}
+
+function checkArrayQuestionsForFin() {
+    if (index === newArrayQuestions.length - 1) {
+        newArrayQuestions = newArrayQuestions.filter(arr => arr.status === 0); // Para sigentes rondas (preguntas despues de "pasapalabra") vamos a filtrar el array
+        if (newArrayQuestions.length !== 0) {
+            index = 0;
+            currentLetter = newArrayQuestions[index].letter;
+            nextRoundMarker = 1;
+            console.log('newArrayQuestions: ', newArrayQuestions);
+            return newArrayQuestions;
+        } else {
+            console.log("Stop Game!");
+            stopGame();
+        }
+    }
+
 }
 
 function checkAnswer() {
-    let answ = currentUserAnswer(); //answerVal.value
-    if (answ.toLowerCase() !== null && answ.toLowerCase() === newArrayQuestions[index].answer) {
-        answerParagraph.textContent = answ;
+
+    let answer = currentUserAnswer(); //answerVal.value
+    if (answer.toLowerCase() !== null && answer.toLowerCase() === newArrayQuestions[index].answer) {
         console.log("correcto!")
+        userPuntos(index, 1, 1);
+        changeCorrectAnswerLetterColor();
     } else {
         console.log("Incorrecto!");
-        answerParagraph.textContent = answ;
+        userPuntos(index, 0, 1);
+        changeIncorrectAnswerLetterColor();
     }
+    showScores();
+    checkArrayQuestionsForFin();
     updateLetter();
     updateAnswer(); //  answerVal.value = ''
-    changeLetterColor();
-    showNextQuestion()
+    changeActivLetterColor();
+    showNextQuestion();
+
 }
 
 function startGame() {
+    removeAllAnswerLetterClasses();
+    clearInterval(timer);
     index = 0;
+    timeTotal = 180;
+    newArrayQuestions = [];
     updateAnswer(); //  answerVal.value = ''
     newArrayQuestions = getNewRandomQuestions(questions); //newQuestions.filter(arr => arr.status === 0);
+    //currentLetter = newArrayQuestions[index].letter;
     currentLetter = newArrayQuestions[index].letter;
-    questionParagraph.textContent = newArrayQuestions[index].question;
-    changeLetterColor();
-    console.log("start");
+    // updateLetter(); //currentLetter = newArrayQuestions[index].letter
+    showNextQuestion(); //questionParagraph.textContent = newArrayQuestions[index].question;
+    changeActivLetterColor();
+    timer = setInterval(countdownTime, 1000);
+    hideDOMElement(descriptionPart);
+    showDOMElement(scoresBlock);
+    showDOMElement(buttonsBlock);
+    showDOMElement(interractionBlock);
 }
 
+function userPuntos(index, punto, status) {
+    userPunto += punto;
+    console.log('userPunto: ', userPunto);
+    newArrayQuestions[index].status = status;
+    console.log(`newArrayQuestions[${index}].status: , ${newArrayQuestions[index].status}`);
+}
 
+function stopGame() {
+    finalMessage.textContent = `Tienes : ${userPunto} respuestas correctas y ${27-userPunto} incorrectas`;
+    clearInterval(timer);
+    hideDOMElement(buttonsBlock);
+    hideDOMElement(interractionBlock);
+    showDOMElement(finalMessage);
+}
 
-
-
-
-
+function countdownTime() {
+    if (timeTotal === 0) {
+        stopGame();
+    } else {
+        time_left.innerHTML = timeTotal;
+        timeTotal--;
+    }
+}
 
 
 window.onkeydown = function(event) {
@@ -174,5 +272,16 @@ responderButton.addEventListener("click", (event) => {
 playButton.addEventListener("click", (event) => {
     if (event.target.nodeName === 'BUTTON') {
         startGame();
+        let playAgainButton = playButton.firstElementChild;
+        playAgainButton.textContent = "Play Again"
+        console.log('playAgainButton: ', playAgainButton);
     }
+})
+
+pasapalabraButton.addEventListener("click", (event) => {
+    pasapalabra();
+})
+
+stopButton.addEventListener("click", (event) => {
+    stopGame();
 })
