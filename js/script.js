@@ -45,6 +45,7 @@ const scoresBlock = document.querySelector("#scores_block");
 const interractionBlock = document.querySelector(".interaction");
 const scoresToShow = document.querySelector("#score_sum");
 const finalMessage = document.querySelector(".final_message");
+const soundToggle = document.querySelector(".sound_toggle");
 
 let r = "";
 let letraAngle = 270;
@@ -57,6 +58,7 @@ let userPunto = 0;
 let nextRoundMarker = 0;
 let timeTotal;
 let timer;
+let soundToggleChekbox = 1;
 
 Array.from(letrasSpans).forEach(item => {
     r = "rotate(" + letraAngle + "deg)";
@@ -189,7 +191,6 @@ function updateLetter() {
 
 function updateIndex() {
     index++;
-    //  console.log('index: ', index);
 }
 
 function showNextQuestion() {
@@ -203,7 +204,10 @@ function pasapalabra() {
     updateLetter();
     changeActivLetterColor();
     showNextQuestion();
-    playPasapalabraAnswerSound();
+    if (soundToggleChekbox) {
+        playPasapalabraAnswerSound();
+    }
+
 }
 
 function checkArrayQuestionsForFin() {
@@ -230,12 +234,16 @@ function checkAnswer() {
         console.log("correcto!")
         userPuntos(index, 1, 1);
         changeCorrectAnswerLetterColor();
-        playCorrectAnswerSound();
+        if (soundToggleChekbox) {
+            playCorrectAnswerSound();
+        }
     } else {
         console.log("Incorrecto!");
         userPuntos(index, 0, 1);
         changeIncorrectAnswerLetterColor();
-        playNoCorrectAnswerSound();
+        if (soundToggleChekbox) {
+            playNoCorrectAnswerSound();
+        }
     }
     showScores();
     checkArrayQuestionsForFin();
@@ -266,7 +274,9 @@ function startGame() {
     showDOMElement(buttonsBlock);
     showDOMElement(interractionBlock);
     animation();
-    playStartSound();
+    if (soundToggleChekbox) {
+        playStartSound();
+    }
 }
 
 function userPuntos(index, punto, status) {
@@ -282,7 +292,9 @@ function stopGame() {
     hideDOMElement(buttonsBlock);
     hideDOMElement(interractionBlock);
     showDOMElement(finalMessage);
-    playFinishtSound();
+    if (soundToggleChekbox) {
+        playFinishtSound();
+    }
 }
 
 function countdownTime() {
@@ -321,4 +333,14 @@ pasapalabraButton.addEventListener("click", (event) => {
 
 stopButton.addEventListener("click", (event) => {
     stopGame();
+})
+
+soundToggle.addEventListener("change", (event) => {
+    if (event.currentTarget.checked) {
+        soundToggleChekbox = 1;
+        soundToggle.nextElementSibling.textContent = "Sound On";
+    } else {
+        soundToggleChekbox = 0;
+        soundToggle.nextElementSibling.textContent = "Sound Off";
+    }
 })

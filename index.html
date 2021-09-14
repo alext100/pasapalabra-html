@@ -159,9 +159,11 @@
         <p>El programa es sensible a las acentuación, asi que se debe introducir la palabra sin tilde. Es posible utilizar la tecla ENTER para enviar la palabra y el SPACE para hacer pasapalabra.</p>
     </div>
     <div class="interaction hideElement">
+
         <div class="pregunta">Pregunta:
             <p class="question"></p>
         </div>
+
         <div class="answer">
             <input id="answer" type="text" placeholder="Tu respuesta..." autocomplete="off">
             <p class="answer_paragraph"></p>
@@ -172,7 +174,15 @@
             <button type="button" id="responder" class="answer_button button">Responder</button>
             <button type="button" id="pasapalabra" class="button">Pasapalabra</button>
             <button type="button" id="stop" class="button">Stop</button>
+            <div class="sound_control">
+                <input type="checkbox" class="sound_toggle" checked>
+                <div> Sound on </div>
+            </div>
+
         </div>
+
+
+
     </div>
     <section id="scores_block" class="hideElement">
         <div>Tiempo:</div>
