@@ -1,129 +1,147 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #F1F6F9;
-    position: relative;
-    height: 100vh;
-    overflow: hidden;
-    margin: 20px;
-    color: #14274E;
-}
-
-.container {
-    position: absolute;
-    top: 30%;
-    right: 40%;
-}
-
-.description {
-    font-size: 20px;
-    block-size: 30%;
-    width: 45%;
-}
-
-.play_button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 35px;
-    /*  background: rgb(255, 3, 58); */
-    border: 1px solid black;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    position: relative;
-    /*  transform: translate(207 %, 0); */
-    top: -25px;
-    left: 200px;
-    cursor: pointer;
-    text-align: center;
-    vertical-align: middle;
-    overflow: hidden;
-    background-image: -webkit-linear-gradient(45deg, #1e335c 0%, #72f1e1 100%);
-    background-image: linear-gradient(45deg, #14274E 0%, #91fdb7 100%);
-    transition: .4s;
-    color: #ffffff;
-}
-
-.play_button_div {
-    position: relative;
-}
-
-.container>div {
-    border: 1px dashed rgba(255, 255, 255, 0);
-    width: 300px;
-    /*     height: 50px; */
-    transform-origin: 84% 25px;
-    position: absolute;
-}
-
-.square {
-    background: #304c7c;
-    border: 1px solid black;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.square>span {
-    font-size: 43px;
-    color: #ffffff;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-.pasapalabraCircle {
-    background-color: rgb(43, 226, 217);
-}
-
-.activeCircle {
-    background-color: blueviolet;
-}
-
-.correctAnswerCircle {
-    background-color: rgb(126, 245, 71);
-}
-
-.incorrectAnswerCircle {
-    background-color: rgb(245, 71, 71);
-}
-
-.interaction {
-    display: flex;
-    font-size: 30px;
-    flex-direction: column;
-    align-items: flex-start;
-    position: absolute;
-    bottom: 5%;
-}
-
-.buttons_block {
-    display: inline-flex;
-    justify-content: center;
-}
-
-.button {
-    margin: 15px;
-    font-size: 20px;
-}
-
-#scores_block {
-    font-size: 30px;
-}
-
-#answer {
-    block-size: 50px;
-    font-size: 25px;
-    inline-size: 500px;
-}
-
-.hideElement {
-    display: none;
-}
+ @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+ * {
+     box-sizing: border-box;
+ }
+ 
+ body {
+     font-family: 'Roboto', sans-serif;
+     background-color: #F1F6F9;
+     position: relative;
+     height: 100vh;
+     overflow: hidden;
+     margin: 20px;
+     color: #14274E;
+ }
+ 
+ .container {
+     position: absolute;
+     top: 30%;
+     right: 40%;
+ }
+ 
+ .description {
+     font-size: 20px;
+     block-size: 30%;
+     width: 45%;
+ }
+ 
+ .play_button {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 35px;
+     /*  background: rgb(255, 3, 58); */
+     border: 1px solid black;
+     width: 120px;
+     height: 120px;
+     border-radius: 50%;
+     position: relative;
+     /*  transform: translate(207 %, 0); */
+     top: -25px;
+     left: 200px;
+     cursor: pointer;
+     text-align: center;
+     vertical-align: middle;
+     overflow: hidden;
+     background-image: -webkit-linear-gradient(45deg, #1e335c 0%, #72f1e1 100%);
+     background-image: linear-gradient(45deg, #14274E 0%, #91fdb7 100%);
+     transition: .4s;
+     color: #ffffff;
+ }
+ 
+ .play_button_div {
+     position: relative;
+ }
+ 
+ @keyframes myPasa {
+     0% {
+         opacity: 0;
+     }
+     100% {
+         opacity: 1;
+     }
+ }
+ 
+ .container>div {
+     border: 1px dashed rgba(255, 255, 255, 0);
+     width: 300px;
+     position: absolute;
+     transform-origin: 84% 25px;
+ }
+ 
+ .container_to_animation>div {
+     animation: myPasa 3s ease-in-out 1s 1 alternate both;
+ }
+ 
+ .square {
+     background: #304c7c;
+     border: 1px solid black;
+     width: 50px;
+     height: 50px;
+     border-radius: 50%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
+ 
+ .square>span {
+     font-size: 43px;
+     color: #ffffff;
+     text-transform: uppercase;
+     text-align: center;
+ }
+ 
+ .pasapalabraCircle {
+     background-color: rgb(43, 226, 217);
+ }
+ 
+ .activeCircle {
+     background-color: blueviolet;
+ }
+ 
+ .correctAnswerCircle {
+     background-color: rgb(126, 245, 71);
+ }
+ 
+ .incorrectAnswerCircle {
+     background-color: rgb(245, 71, 71);
+ }
+ 
+ .interaction {
+     display: flex;
+     font-size: 30px;
+     flex-direction: column;
+     align-items: flex-start;
+     position: absolute;
+     bottom: 5%;
+ }
+ 
+ .buttons_block {
+     display: inline-flex;
+     justify-content: center;
+ }
+ 
+ .button {
+     margin: 15px;
+     font-size: 20px;
+     width: 140px;
+     height: 40px;
+     background: #AADAF7;
+     border: solid #002457 1px;
+     box-shadow: -14px 15px 30px rgba(7, 61, 171, 0.3);
+     -webkit-box-shadow: -14px 15px 30px rgba(7, 61, 171, 0.3);
+ }
+ 
+ #scores_block {
+     font-size: 30px;
+ }
+ 
+ #answer {
+     block-size: 50px;
+     font-size: 25px;
+     inline-size: 500px;
+ }
+ 
+ .hideElement {
+     display: none;
+ }

@@ -82,6 +82,36 @@ function showScores() {
     scoresToShow.textContent = userPunto;
 }
 
+function animation() {
+    container.classList.add("container_to_animation");
+    interractionBlock.classList.add("container_to_animation");
+}
+
+function playStartSound() {
+    const tmpStartSound = new Audio("sounds/Big-Hit-15-_reverb_.wav");
+    tmpStartSound.play();
+}
+
+function playFinishtSound() {
+    const tmpStartSound = new Audio("sounds/drone_6.wav");
+    tmpStartSound.play();
+}
+
+function playCorrectAnswerSound() {
+    const tmpStartSound = new Audio("sounds/positive-event-strong-chord.wav");
+    tmpStartSound.play();
+}
+
+function playNoCorrectAnswerSound() {
+    const tmpStartSound = new Audio("sounds/Banjo_Drum_Hit_Fienup_016.wav");
+    tmpStartSound.play();
+}
+
+function playPasapalabraAnswerSound() {
+    const tmpStartSound = new Audio("sounds/HumanWhoosh2.wav");
+    tmpStartSound.play();
+}
+
 function getNewRandomQuestions(array) { // Del array inicial, formamos un nuevo array con preguntas aleotorias.
     let index = Math.floor(Math.random() * 3);
     newQuestions = array.map(({ letter, answer, status, question }) => ({ letter, answer: answer[index], status, question: question[index] }));
@@ -173,6 +203,7 @@ function pasapalabra() {
     updateLetter();
     changeActivLetterColor();
     showNextQuestion();
+    playPasapalabraAnswerSound();
 }
 
 function checkArrayQuestionsForFin() {
@@ -199,10 +230,12 @@ function checkAnswer() {
         console.log("correcto!")
         userPuntos(index, 1, 1);
         changeCorrectAnswerLetterColor();
+        playCorrectAnswerSound();
     } else {
         console.log("Incorrecto!");
         userPuntos(index, 0, 1);
         changeIncorrectAnswerLetterColor();
+        playNoCorrectAnswerSound();
     }
     showScores();
     checkArrayQuestionsForFin();
@@ -228,9 +261,12 @@ function startGame() {
     changeActivLetterColor();
     timer = setInterval(countdownTime, 1000);
     hideDOMElement(descriptionPart);
+    hideDOMElement(finalMessage);
     showDOMElement(scoresBlock);
     showDOMElement(buttonsBlock);
     showDOMElement(interractionBlock);
+    animation();
+    playStartSound();
 }
 
 function userPuntos(index, punto, status) {
@@ -246,6 +282,7 @@ function stopGame() {
     hideDOMElement(buttonsBlock);
     hideDOMElement(interractionBlock);
     showDOMElement(finalMessage);
+    playFinishtSound();
 }
 
 function countdownTime() {
