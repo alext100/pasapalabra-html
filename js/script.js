@@ -28,28 +28,36 @@ let questions = [
     { letter: "z", answer: ["zen", "zombi", "zoo"], status: 0, question: ["CON LA Z. Escuela de budismo que busca la experiencia de la sabiduría más allá del discurso racional", "CON LA Z. Muerto que ha sido revivido mediante un rito mágico y que carece de voluntad propia, según ciertas leyendas de Haití y del sur de Estados Unidos de América.", "CON LA Z. Recinto con instalaciones adecuadas para conservar, cuidar y criar especies diferentes de animales, especialmente salvajes y exóticos, que puede ser visitado por el público."] },
 ]
 
+//        DOM elements
+
 const container = document.querySelector(".container");
-const square = document.querySelectorAll(".square");
 const letrasSpans = document.querySelectorAll("span");
 const blocks = document.querySelectorAll(".block");
 const descriptionPart = document.querySelector(".description");
 const questionParagraph = document.querySelector(".question");
-const answerParagraph = document.querySelector(".answer_paragraph");
 const buttonsBlock = document.querySelector(".buttons_block");
 const answerVal = document.querySelector("#answer");
-const responderButton = document.querySelector("#responder");
 const playButton = document.querySelector(".play_button_div");
-const pasapalabraButton = document.querySelector("#pasapalabra");
-const stopButton = document.querySelector("#stop");
 const scoresBlock = document.querySelector("#scores_block");
-const interractionBlock = document.querySelector(".interaction");
+const interactionBlock = document.querySelector(".interaction");
 const scoresToShow = document.querySelector("#score_sum");
 const finalMessage = document.querySelector(".final_message");
 const soundToggle = document.querySelector(".sound_toggle");
+const userNameField = document.querySelector("#userName");
+const rankingTable = document.querySelector(".ranking_block");
+const tableAciertos1 = document.querySelector(".Aciertos-1");
+const tableAciertos2 = document.querySelector(".Aciertos-2");
+const tableAciertos3 = document.querySelector(".Aciertos-3");
+const tableAciertos4 = document.querySelector(".Aciertos-4");
+const tableAciertos5 = document.querySelector(".Aciertos-5");
+
+//    Variables for building a circle from letters
 
 let r = "";
 let letraAngle = 270;
 let blockAngle = 90;
+
+//     Other variables
 
 let newArrayQuestions = [];
 let currentLetter = "";
@@ -59,6 +67,11 @@ let nextRoundMarker = 0;
 let timeTotal;
 let timer;
 let soundToggleChekbox = 1;
+let playerName = "";
+let rating = [];
+
+
+// Construct a circle from elements. Angle between elements 13.333 degrees
 
 Array.from(letrasSpans).forEach(item => {
     r = "rotate(" + letraAngle + "deg)";
@@ -66,11 +79,17 @@ Array.from(letrasSpans).forEach(item => {
     letraAngle -= 13.3333;
 });
 
+
+// By rotating each element, the letter inside it also rotated. We turn it 13.333 degrees in the opposite direction.
+
 Array.from(blocks).forEach(item => {
     r = "rotate(" + blockAngle + "deg)";
     item.style.transform = r;
     blockAngle += 13.3333;
 });
+
+
+// Add and remove a class to exclude or include an element from html.
 
 function hideDOMElement(element) {
     element.classList.add('hideElement');
@@ -80,14 +99,23 @@ function showDOMElement(element) {
     element.classList.remove('hideElement');
 }
 
+
+// Show player scores
+
 function showScores() {
     scoresToShow.textContent = userPunto;
 }
 
+
+// Add the HTML class to the elements, in order to apply the animation effect with the css.
+
 function animation() {
     container.classList.add("container_to_animation");
-    interractionBlock.classList.add("container_to_animation");
+    interactionBlock.classList.add("container_to_animation");
 }
+
+
+//     Audio for different actions
 
 function playStartSound() {
     const tmpStartSound = new Audio("sounds/Big-Hit-15-_reverb_.wav");
@@ -114,10 +142,20 @@ function playPasapalabraAnswerSound() {
     tmpStartSound.play();
 }
 
-function getNewRandomQuestions(array) { // Del array inicial, formamos un nuevo array con preguntas aleotorias.
+
+// Del array inicial, formamos un nuevo array con preguntas aleotorias.
+
+function getNewRandomQuestions(array) {
     let index = Math.floor(Math.random() * 3);
     newQuestions = array.map(({ letter, answer, status, question }) => ({ letter, answer: answer[index], status, question: question[index] }));
     return newQuestions;
+}
+
+
+// Retrieving and updating values from input fields
+
+function currentPlayerName() {
+    playerName = userNameField.value;
 }
 
 function currentUserAnswer() {
@@ -128,6 +166,9 @@ function updateAnswer() {
     answerVal.value = '';
 }
 
+
+//  Change the colors of the elements depending on the conditions:
+//   active element, correct or incorrect answer or pasapalabra.
 
 function changeActivLetterColor() {
     for (let item of letrasSpans) {
@@ -167,36 +208,78 @@ function removeAllAnswerLetterClasses() {
     }
 }
 
+
+// Change Play button to Play Again button:
+
+function changePlayButtonTextContent() {
+    playButton.firstElementChild.textContent = "Play Again";
+}
+
+
+// The function is executed when user press the Play button, or Play Again during the game, to restart.
+
+function startGame() {
+    currentPlayerName();
+    if (!playerName) return; //If the user has not entered a name, the game will not start.
+    removeAllAnswerLetterClasses();
+    clearInterval(timer);
+    index = 0;
+    timeTotal = 300;
+    userPunto = 0;
+    newArrayQuestions = [];
+    updateAnswer(); //  answerVal.value = ''
+    newArrayQuestions = getNewRandomQuestions(questions); //newQuestions.filter(arr => arr.status === 0);
+    currentLetter = newArrayQuestions[index].letter;
+    showNextQuestion(); //questionParagraph.textContent = newArrayQuestions[index].question;
+    changeActivLetterColor();
+    timer = setInterval(countdownTime, 1000);
+    hideDOMElement(descriptionPart);
+    hideDOMElement(finalMessage);
+    hideDOMElement(rankingTable);
+    showDOMElement(scoresBlock);
+    showDOMElement(buttonsBlock);
+    showDOMElement(interactionBlock);
+    animation();
+    if (soundToggleChekbox) {
+        playStartSound();
+    }
+}
+
+// After completing the circle of questions, this function will create a new array of questions to which the pasapalabra has been applied. \
+// These are questions with status = 0
+
 function updateQuestions() {
     return newArrayQuestions.filter(arr => arr.status === 0);
 }
+
+
+// A function that returns the current letter to be used in this round.
 
 function updateLetter() {
     if (index === 0 && nextRoundMarker === 1) {
         nextRoundMarker = 0;
         return;
     } else {
-
         for (let i = 0; i < newArrayQuestions.length - 1; i++) {
             if (currentLetter === newArrayQuestions[i].letter) {
                 i++;
                 currentLetter = newArrayQuestions[i].letter;
-                updateIndex();
+                index++;
             }
         }
     }
-    console.log('currentLetter: ', currentLetter);
     return currentLetter;
 }
 
-function updateIndex() {
-    index++;
-}
+
+//Shows the next question to the user in HTML
 
 function showNextQuestion() {
     questionParagraph.textContent = newArrayQuestions[index].question;
-    console.log(`newArrayQuestions[${index}].question: ', ${newArrayQuestions[index].question}`);
 }
+
+
+//When press the Pasapalabra button, perform next set of functions:
 
 function pasapalabra() {
     changePasapalabraLetterColor();
@@ -207,38 +290,37 @@ function pasapalabra() {
     if (soundToggleChekbox) {
         playPasapalabraAnswerSound();
     }
-
 }
 
+
+// Checks if there are more questions in the current array and if not new array will be make if it possible or game will be stoped
+
 function checkArrayQuestionsForFin() {
-    if (index === newArrayQuestions.length - 1) {
+    if (index === newArrayQuestions.length - 1) { // Checks if the current question is the last in an array
         newArrayQuestions = newArrayQuestions.filter(arr => arr.status === 0); // Para sigentes rondas (preguntas despues de "pasapalabra") vamos a filtrar el array
-        if (newArrayQuestions.length !== 0) {
+        if (newArrayQuestions.length !== 0) { // In case there are questions in the new array:
             index = 0;
             currentLetter = newArrayQuestions[index].letter;
             nextRoundMarker = 1;
-            console.log('newArrayQuestions: ', newArrayQuestions);
             return newArrayQuestions;
-        } else {
-            console.log("Stop Game!");
+        } else { // If there are no questions in the new array:
             stopGame();
         }
     }
-
 }
 
-function checkAnswer() {
 
+// Checks the user's answer
+
+function checkAnswer() {
     let answer = currentUserAnswer(); //answerVal.value
     if (answer.toLowerCase() !== null && answer.toLowerCase() === newArrayQuestions[index].answer) {
-        console.log("correcto!")
         userPuntos(index, 1, 1);
         changeCorrectAnswerLetterColor();
         if (soundToggleChekbox) {
             playCorrectAnswerSound();
         }
     } else {
-        console.log("Incorrecto!");
         userPuntos(index, 0, 1);
         changeIncorrectAnswerLetterColor();
         if (soundToggleChekbox) {
@@ -247,55 +329,99 @@ function checkAnswer() {
     }
     showScores();
     checkArrayQuestionsForFin();
-    updateLetter();
-    updateAnswer(); //  answerVal.value = ''
-    changeActivLetterColor();
-    showNextQuestion();
-
-}
-
-function startGame() {
-    removeAllAnswerLetterClasses();
-    clearInterval(timer);
-    index = 0;
-    timeTotal = 180;
-    newArrayQuestions = [];
-    updateAnswer(); //  answerVal.value = ''
-    newArrayQuestions = getNewRandomQuestions(questions); //newQuestions.filter(arr => arr.status === 0);
-    //currentLetter = newArrayQuestions[index].letter;
-    currentLetter = newArrayQuestions[index].letter;
-    // updateLetter(); //currentLetter = newArrayQuestions[index].letter
-    showNextQuestion(); //questionParagraph.textContent = newArrayQuestions[index].question;
-    changeActivLetterColor();
-    timer = setInterval(countdownTime, 1000);
-    hideDOMElement(descriptionPart);
-    hideDOMElement(finalMessage);
-    showDOMElement(scoresBlock);
-    showDOMElement(buttonsBlock);
-    showDOMElement(interractionBlock);
-    animation();
-    if (soundToggleChekbox) {
-        playStartSound();
+    if (rankingTable.classList.contains("hideElement")) { // If the game has not been stopped
+        updateLetter();
+        updateAnswer(); //  answerVal.value = ''
+        changeActivLetterColor();
+        showNextQuestion();
     }
 }
+
+
+// Accumulates the user's points and updates the status attribute, depending on the user's answer to the question.
 
 function userPuntos(index, punto, status) {
     userPunto += punto;
-    console.log('userPunto: ', userPunto);
     newArrayQuestions[index].status = status;
-    console.log(`newArrayQuestions[${index}].status: , ${newArrayQuestions[index].status}`);
 }
 
+
+// When user press the Stop button or when questions or time runs out.
+
 function stopGame() {
-    finalMessage.textContent = `Tienes : ${userPunto} respuestas correctas y ${27-userPunto} incorrectas`;
+    finalMessage.textContent = `Tienes ${userPunto} respuestas correctas y ${27-userPunto} incorrectas`;
     clearInterval(timer);
     hideDOMElement(buttonsBlock);
-    hideDOMElement(interractionBlock);
+    hideDOMElement(interactionBlock);
     showDOMElement(finalMessage);
+    showDOMElement(rankingTable);
     if (soundToggleChekbox) {
         playFinishtSound();
     }
+    generateRankingTable();
 }
+
+
+// Generates a random integer in an interval.
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+
+// Función que devuelve un array con calificaciones de usuarios, ordenado por puntos (score).
+
+function playersRating(grade) {
+    const sortedPlayersRating = grade.sort((a, b) => b.score - a.score);
+    return sortedPlayersRating;
+}
+
+
+//The next three functions construct a table with the results of our player and four fictional players with random results.
+
+function ScoreTableConstructor(name, score, time) {
+    this.name = name;
+    this.score = score;
+    this.time = time;
+}
+
+function setScoreTable() {
+    playerTimeLeft = timeTotal;
+    user1 = new ScoreTableConstructor("David", (27 - getRandomInt(5, 26)), getRandomInt(0, 200));
+    user2 = new ScoreTableConstructor("Jessica", 27 - getRandomInt(7, 24), getRandomInt(0, 250));
+    user3 = new ScoreTableConstructor("Lisa", (27 - getRandomInt(2, 20)), getRandomInt(0, 300));
+    user4 = new ScoreTableConstructor("Xavi", (27 - getRandomInt(2, 15)), getRandomInt(0, 350));
+    user5 = new ScoreTableConstructor(playerName, userPunto, playerTimeLeft);
+    rating.push(user1, user2, user3, user4, user5);
+    return rating;
+
+};
+
+function generateRankingTable() {
+    setScoreTable();
+    tableAciertos1.textContent = playersRating(rating)[0].score;
+    tableAciertos2.textContent = playersRating(rating)[1].score;
+    tableAciertos3.textContent = playersRating(rating)[2].score;
+    tableAciertos4.textContent = playersRating(rating)[3].score;
+    tableAciertos5.textContent = playersRating(rating)[4].score;
+
+    tableAciertos1.nextElementSibling.textContent = playersRating(rating)[0].time;
+    tableAciertos2.nextElementSibling.textContent = playersRating(rating)[1].time;
+    tableAciertos3.nextElementSibling.textContent = playersRating(rating)[2].time;
+    tableAciertos4.nextElementSibling.textContent = playersRating(rating)[3].time;
+    tableAciertos5.nextElementSibling.textContent = playersRating(rating)[4].time;
+
+    tableAciertos1.previousElementSibling.textContent = playersRating(rating)[0].name;
+    tableAciertos2.previousElementSibling.textContent = playersRating(rating)[1].name;
+    tableAciertos3.previousElementSibling.textContent = playersRating(rating)[2].name;
+    tableAciertos4.previousElementSibling.textContent = playersRating(rating)[3].name;
+    tableAciertos5.previousElementSibling.textContent = playersRating(rating)[4].name;
+}
+
+
+// Time
 
 function countdownTime() {
     if (timeTotal === 0) {
@@ -307,32 +433,58 @@ function countdownTime() {
 }
 
 
+// If the user tries to press the Play button without entering a name, the input field will be highlighted in red.
+
+function changeInputFieldBorderColorIfError(element) {
+    element.classList.add("error");
+}
+
+
+// Event listeners:
+
 window.onkeydown = function(event) {
-
-    if (event.keyCode === 13) {
-        checkAnswer()
+    if (event.target.id === 'answer' && event.key === "Enter") {
+        checkAnswer();
     }
-};
 
-responderButton.addEventListener("click", (event) => {
-    checkAnswer();
-})
+    if (event.target.id === 'userName' && event.key === "Enter") {
+        startGame();
+        if (playerName) {
+            changePlayButtonTextContent();
+        } else changeInputFieldBorderColorIfError(userNameField);
+    }
+
+    if (event.key === "Escape" && playerName !== "" && rankingTable.classList.contains("hideElement")) {
+        if (window.confirm("¿Estás seguro de que quieres terminar el juego?")) {
+            stopGame();
+        } else return;
+    }
+
+};
 
 playButton.addEventListener("click", (event) => {
     if (event.target.nodeName === 'BUTTON') {
         startGame();
-        let playAgainButton = playButton.firstElementChild;
-        playAgainButton.textContent = "Play Again"
-        console.log('playAgainButton: ', playAgainButton);
+        if (!playerName) {
+            changeInputFieldBorderColorIfError(userNameField);
+            return;
+        }
+        changePlayButtonTextContent();
     }
 })
 
-pasapalabraButton.addEventListener("click", (event) => {
-    pasapalabra();
-})
+buttonsBlock.addEventListener("click", (event) => {
+    if (event.target.textContent === "Responder") {
+        checkAnswer();
+    }
 
-stopButton.addEventListener("click", (event) => {
-    stopGame();
+    if (event.target.textContent === "Pasapalabra") {
+        pasapalabra();
+    }
+
+    if (event.target.textContent === "Stop") {
+        stopGame();
+    }
 })
 
 soundToggle.addEventListener("change", (event) => {
@@ -343,4 +495,4 @@ soundToggle.addEventListener("change", (event) => {
         soundToggleChekbox = 0;
         soundToggle.nextElementSibling.textContent = "Sound Off";
     }
-})
+});
