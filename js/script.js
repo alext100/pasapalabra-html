@@ -388,6 +388,7 @@ function ScoreTableConstructor(name, score, time) {
 }
 
 function setScoreTable() {
+    rating = [];
     playerTimeLeft = timeTotal;
     user1 = new ScoreTableConstructor("David", (27 - getRandomInt(5, 26)), getRandomInt(0, 200));
     user2 = new ScoreTableConstructor("Jessica", 27 - getRandomInt(7, 24), getRandomInt(0, 250));
