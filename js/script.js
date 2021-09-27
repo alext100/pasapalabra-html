@@ -391,12 +391,12 @@ function ScoreTableConstructor(name, score, time) {
 
 function setScoreTable() {
     rating = [];
-    playerTimeLeft = timeTotal;
-    user1 = new ScoreTableConstructor("David", (27 - getRandomInt(5, 26)), getRandomInt(0, 200));
-    user2 = new ScoreTableConstructor("Jessica", 27 - getRandomInt(7, 24), getRandomInt(0, 250));
-    user3 = new ScoreTableConstructor("Lisa", (27 - getRandomInt(2, 20)), getRandomInt(0, 300));
-    user4 = new ScoreTableConstructor("Xavi", (27 - getRandomInt(2, 15)), getRandomInt(0, 350));
-    user5 = new ScoreTableConstructor(playerName, userPunto, playerTimeLeft);
+    let playerTimeLeft = timeTotal;
+    let user1 = new ScoreTableConstructor("David", (27 - getRandomInt(5, 26)), getRandomInt(0, 200));
+    let user2 = new ScoreTableConstructor("Jessica", 27 - getRandomInt(7, 24), getRandomInt(0, 250));
+    let user3 = new ScoreTableConstructor("Lisa", (27 - getRandomInt(2, 20)), getRandomInt(0, 300));
+    let user4 = new ScoreTableConstructor("Xavi", (27 - getRandomInt(2, 15)), getRandomInt(0, 350));
+    let user5 = new ScoreTableConstructor(playerName, userPunto, playerTimeLeft);
     rating.push(user1, user2, user3, user4, user5);
     return rating;
 
