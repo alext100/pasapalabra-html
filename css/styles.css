@@ -88,7 +88,7 @@ body {
 
 .square>span {
     font-family: 'Cormorant SC', serif;
-    font-size: 35px;
+    font-size: 40px;
     color: #ffffff;
     text-transform: uppercase;
     text-align: center;
@@ -261,7 +261,7 @@ tr:nth-child(even) {
         inline-size: 400px;
     }
     .container {
-        grid-area: 6/10;
+        grid-area: 6/8;
     }
     .container>div {
         width: 280px;
@@ -318,6 +318,9 @@ tr:nth-child(even) {
 @media screen and (max-width: 899px) {
     .description {
         font-size: 14px;
+        grid-area: 11/1/20/20;
+        width: 90%;
+        justify-self: center;
     }
     #userName {
         block-size: 40px;
@@ -325,7 +328,7 @@ tr:nth-child(even) {
         inline-size: 300px;
     }
     .container {
-        grid-area: 5/8;
+        grid-area: 5/5;
     }
     .container>div {
         width: 250px;

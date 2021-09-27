@@ -71,7 +71,8 @@ let playerName = "";
 let rating = [];
 
 
-// Construct a circle from elements. Angle between elements 13.333 degrees
+
+// Construye un círculo a partir de elementos. Ángulo entre elementos 13,333 grados
 
 Array.from(letrasSpans).forEach(item => {
     r = "rotate(" + letraAngle + "deg)";
@@ -80,7 +81,7 @@ Array.from(letrasSpans).forEach(item => {
 });
 
 
-// By rotating each element, the letter inside it also rotated. We turn it 13.333 degrees in the opposite direction.
+// Al girar cada elemento, la letra de su interior también giraba. Lo giramos 13,333 grados en la dirección opuesta.
 
 Array.from(blocks).forEach(item => {
     r = "rotate(" + blockAngle + "deg)";
@@ -89,7 +90,7 @@ Array.from(blocks).forEach(item => {
 });
 
 
-// Add and remove a class to exclude or include an element from html.
+// Agregue y elimine una clase para excluir o incluir un elemento de html.
 
 function hideDOMElement(element) {
     element.classList.add('hideElement');
@@ -100,14 +101,14 @@ function showDOMElement(element) {
 }
 
 
-// Show player scores
+// Mostrar puntuaciones de jugadores
 
 function showScores() {
     scoresToShow.textContent = userPunto;
 }
 
 
-// Add the HTML class to the elements, in order to apply the animation effect with the css.
+// Agregue la clase HTML a los elementos, para aplicar el efecto de animación con el css.
 
 function animation() {
     container.classList.add("container_to_animation");
@@ -115,7 +116,7 @@ function animation() {
 }
 
 
-//     Audio for different actions
+//     Audio para diferentes acciones
 
 function playStartSound() {
     const tmpStartSound = new Audio("sounds/Big-Hit-15-_reverb_.wav");
@@ -143,7 +144,7 @@ function playPasapalabraAnswerSound() {
 }
 
 
-// Del array inicial, formamos un nuevo array con preguntas aleotorias.
+// Del array inicial, formamos un nuevo array con preguntas aleatorias.
 
 function getNewRandomQuestions(array) {
     let index = Math.floor(Math.random() * 3);
@@ -152,7 +153,7 @@ function getNewRandomQuestions(array) {
 }
 
 
-// Retrieving and updating values from input fields
+// Actualizan valores de campos de entrada:
 
 function currentPlayerName() {
     playerName = userNameField.value;
@@ -167,8 +168,8 @@ function updateAnswer() {
 }
 
 
-//  Change the colors of the elements depending on the conditions:
-//   active element, correct or incorrect answer or pasapalabra.
+// Cambia los colores de los elementos según las condiciones:
+// elemento activo, respuesta correcta o incorrecta o pasapalabra.
 
 function changeActivLetterColor() {
     for (let item of letrasSpans) {
@@ -209,14 +210,14 @@ function removeAllAnswerLetterClasses() {
 }
 
 
-// Change Play button to Play Again button:
+// Cambia el botón "Play" al botón "Play Again":
 
 function changePlayButtonTextContent() {
     playButton.firstElementChild.textContent = "Play Again";
 }
 
 
-// The function is executed when user press the Play button, or Play Again during the game, to restart.
+// La función se ejecuta cuando el usuario presiona el botón "Play" o "Play Again" durante el juego para reiniciar.
 
 function startGame() {
     currentPlayerName();
@@ -245,15 +246,15 @@ function startGame() {
     }
 }
 
-// After completing the circle of questions, this function will create a new array of questions to which the pasapalabra has been applied. \
-// These are questions with status = 0
+// Una vez completado el círculo de preguntas, esta función creará un nuevo array de preguntas a las que se ha aplicado el pasapalabra.
+// Son preguntas con "status === 0"
 
 function updateQuestions() {
     return newArrayQuestions.filter(arr => arr.status === 0);
 }
 
 
-// A function that returns the current letter to be used in this round.
+// Una función que devuelve la letra actual que se utilizará en esta ronda.
 
 function updateLetter() {
     if (index === 0 && nextRoundMarker === 1) {
@@ -272,17 +273,18 @@ function updateLetter() {
 }
 
 
-//Shows the next question to the user in HTML
+//Muestra la siguiente pregunta al usuario en HTML.
 
 function showNextQuestion() {
     questionParagraph.textContent = newArrayQuestions[index].question;
 }
 
 
-//When press the Pasapalabra button, perform next set of functions:
+//Cuando presione el botón Pasapalabra, realice el siguiente conjunto de funciones:
 
 function pasapalabra() {
     changePasapalabraLetterColor();
+    checkArrayQuestionsForFin();
     userPuntos(index, 0, 0);
     updateLetter();
     changeActivLetterColor();
@@ -293,7 +295,7 @@ function pasapalabra() {
 }
 
 
-// Checks if there are more questions in the current array and if not new array will be make if it possible or game will be stoped
+// Comprueba si hay más preguntas en el array actual y, si no, se creará un nuevo array si es posible o se detendrá el juego.
 
 function checkArrayQuestionsForFin() {
     if (index === newArrayQuestions.length - 1) { // Checks if the current question is the last in an array
@@ -310,7 +312,7 @@ function checkArrayQuestionsForFin() {
 }
 
 
-// Checks the user's answer
+// Comprueba la respuesta del usuario.
 
 function checkAnswer() {
     let answer = currentUserAnswer(); //answerVal.value
@@ -338,7 +340,7 @@ function checkAnswer() {
 }
 
 
-// Accumulates the user's points and updates the status attribute, depending on the user's answer to the question.
+// Acumula los puntos del usuario y actualiza el atributo "status", según la respuesta del usuario a la pregunta.
 
 function userPuntos(index, punto, status) {
     userPunto += punto;
@@ -346,7 +348,7 @@ function userPuntos(index, punto, status) {
 }
 
 
-// When user press the Stop button or when questions or time runs out.
+// Cuando el usuario presione el botón Detener o cuando se acabe el tiempo o las preguntas.
 
 function stopGame() {
     finalMessage.textContent = `Tienes ${userPunto} respuestas correctas y ${27-userPunto} incorrectas`;
@@ -379,7 +381,7 @@ function playersRating(grade) {
 }
 
 
-//The next three functions construct a table with the results of our player and four fictional players with random results.
+//Las siguientes tres funciones construyen una tabla con los resultados del jugador y cuatro jugadores ficticios con resultados aleatorios.
 
 function ScoreTableConstructor(name, score, time) {
     this.name = name;
@@ -434,7 +436,7 @@ function countdownTime() {
 }
 
 
-// If the user tries to press the Play button without entering a name, the input field will be highlighted in red.
+// Si el usuario intenta presionar el botón "Play" sin ingresar un nombre, el campo de entrada se resaltará en rojo.
 
 function changeInputFieldBorderColorIfError(element) {
     element.classList.add("error");
@@ -459,6 +461,11 @@ window.onkeydown = function(event) {
         if (window.confirm("¿Estás seguro de que quieres terminar el juego?")) {
             stopGame();
         } else return;
+    }
+
+    if (event.code === "Space" && playerName !== "" && rankingTable.classList.contains("hideElement")) {
+        pasapalabra();
+
     }
 
 };

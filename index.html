@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pasapalabra HTML</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <script src="js/script.js" defer></script>
 </head>
@@ -155,33 +155,43 @@
 
     <div class="description">
         <h2>Bienvenidos al juego de Pasapalabra de Skylab Coders Academy!</h2>
-        <p>Basado en el exitoso concurso de televisión Pasapalabra de Telecinco, las normas son muy sencillas:</p>
-        <p>Se mostraran unas definiciones por pantalla y el usuario deberá responder con la palabra a la que corresponden. El usuario tiene la opción de decir Pasapalabra y dejar esa definición para mas adelante.</p>
-        <p>El programa es sensible a las acentuación, asi que se debe introducir la palabra sin tilde. Es posible utilizar la tecla ENTER para enviar la palabra y el SPACE para hacer pasapalabra.</p>
+        <p>
+            Basado en el exitoso concurso de televisión Pasapalabra de Telecinco, las normas son muy sencillas:
+        </p>
+        <p>
+            Se mostraran unas definiciones por pantalla y el usuario deberá responder con la palabra a la que corresponden. El usuario tiene la opción de decir Pasapalabra y dejar esa definición para mas adelante.
+        </p>
+        <p>
+            El programa es sensible a las acentuación, asi que se debe introducir la palabra sin tilde. Es posible utilizar la tecla ENTER para enviar la palabra y el SPACE para hacer pasapalabra.
+        </p>
 
         <div class="userName">
-            <input id="userName" type="text" placeholder="Tu nombre..." autocomplete="off" maxlength="30">
+            <input id="userName" type="text" placeholder="Tu nombre..." autocomplete="off" maxlength="30" />
         </div>
     </div>
 
     <div class="interaction hideElement">
-        <div class="pregunta">Pregunta:
+        <div class="pregunta">
+            Pregunta:
             <p class="question"></p>
         </div>
 
         <div class="answer">
-            <input id="answer" type="text" placeholder="Tu respuesta..." autocomplete="off" maxlength="30">
+            <input id="answer" type="text" placeholder="Tu respuesta..." autocomplete="off" maxlength="30" />
         </div>
 
         <div class="buttons_block hideElement">
-
-            <button type="button" id="responder" class="answer_button button">Responder</button>
-            <button type="button" id="pasapalabra" class="button">Pasapalabra</button>
+            <button type="button" id="responder" class="answer_button button">
+          Responder
+        </button>
+            <button type="button" id="pasapalabra" class="button">
+          Pasapalabra
+        </button>
             <button type="button" id="stop" class="button">Stop</button>
 
             <div class="sound_control">
-                <input type="checkbox" class="sound_toggle" checked>
-                <div> Sound on </div>
+                <input type="checkbox" class="sound_toggle" checked />
+                <div>Sound on</div>
             </div>
         </div>
     </div>
@@ -194,11 +204,10 @@
     </div>
 
     <div class="ranking_block hideElement">
-
         <div class="final_message hideElement"></div>
-        <br><br>
+        <br /><br />
 
-        <table class="table">
+        <table aria-label="ranking table" class="table">
             <thead class="thead">
                 <tr>
                     <th>Posición</th>
