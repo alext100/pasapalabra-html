@@ -229,9 +229,9 @@ function startGame() {
     userPunto = 0;
     newArrayQuestions = [];
     updateAnswer(); //  answerVal.value = ''
-    newArrayQuestions = getNewRandomQuestions(questions); //newQuestions.filter(arr => arr.status === 0);
+    newArrayQuestions = getNewRandomQuestions(questions);
     currentLetter = newArrayQuestions[index].letter;
-    showNextQuestion(); //questionParagraph.textContent = newArrayQuestions[index].question;
+    showNextQuestion();
     changeActivLetterColor();
     timer = setInterval(countdownTime, 1000);
     hideDOMElement(descriptionPart);
@@ -342,9 +342,9 @@ function checkAnswer() {
 
 // Acumula los puntos del usuario y actualiza el atributo "status", según la respuesta del usuario a la pregunta.
 
-function userPuntos(index, punto, status) {
+function userPuntos(i, punto, status) {
     userPunto += punto;
-    newArrayQuestions[index].status = status;
+    newArrayQuestions[i].status = status;
 }
 
 
