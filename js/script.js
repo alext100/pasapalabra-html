@@ -147,8 +147,8 @@ function playPasapalabraAnswerSound() {
 // Del array inicial, formamos un nuevo array con preguntas aleatorias.
 
 function getNewRandomQuestions(array) {
-    let index = Math.floor(Math.random() * 3);
-    newQuestions = array.map(({ letter, answer, status, question }) => ({ letter, answer: answer[index], status, question: question[index] }));
+    let i = Math.floor(Math.random() * 3);
+    newQuestions = array.map(({ letter, answer, status, question }) => ({ letter, answer: answer[i], status, question: question[i] }));
     return newQuestions;
 }
 
@@ -351,7 +351,7 @@ function userPuntos(index, punto, status) {
 // Cuando el usuario presione el botón Detener o cuando se acabe el tiempo o las preguntas.
 
 function stopGame() {
-    finalMessage.textContent = `Tienes ${userPunto} respuestas correctas y ${27-userPunto} incorrectas`;
+    finalMessage.textContent = `Tienes ${userPunto} respuestas correctas y ${27 - userPunto} incorrectas`;
     clearInterval(timer);
     hideDOMElement(buttonsBlock);
     hideDOMElement(interactionBlock);
