@@ -399,8 +399,7 @@ function setScoreTable() {
     let user5 = new ScoreTableConstructor(playerName, userPunto, playerTimeLeft);
     rating.push(user1, user2, user3, user4, user5);
     return rating;
-
-};
+}
 
 function generateRankingTable() {
     setScoreTable();
