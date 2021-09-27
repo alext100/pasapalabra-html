@@ -148,7 +148,7 @@ function playPasapalabraAnswerSound() {
 
 function getNewRandomQuestions(array) {
     let i = Math.floor(Math.random() * 3);
-    newQuestions = array.map(({ letter, answer, status, question }) => ({ letter, answer: answer[i], status, question: question[i] }));
+    let newQuestions = array.map(({ letter, answer, status, question }) => ({ letter, answer: answer[i], status, question: question[i] }));
     return newQuestions;
 }
 
